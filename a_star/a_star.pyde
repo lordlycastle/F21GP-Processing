@@ -1,10 +1,11 @@
 from __future__ import division
 from vector3 import Vector3
+from path_finder import AStar
 
 maze = None
-maze_size = 30
+maze_size = 5
 
-fps = 30
+fps = 20
 time_step = 1 / fps
 
 blocked_block = 1
@@ -13,11 +14,13 @@ blocked_color = color(255, 0, 0)
 open_color = color(0, 255, 0)
 player_color = color(0, 0, 255)
 target_color = color(244, 66, 226)
-block_size = 20
+block_size = 30
 
 # Will only need x,y
 player_location = Vector3()
 target_location = Vector3()
+
+astar = 0
 
 def setup():
     size(maze_size*block_size, maze_size*block_size)
@@ -26,18 +29,23 @@ def setup():
     new_maze()
 
 def new_maze():
-    global maze, player_location, target_location
+    global maze, player_location, target_location, astar
     noiseSeed(minute() * second() * millis())
     randomSeed(millis() * second() * minute())
     
     maze = generate_maze(size=maze_size, 
-                         probability_of_blocked=0.2)
+                         probability_of_blocked=0,)
+    
     player_location.x, player_location.y = get_spawn_location(maze)
     target_location.x, target_location.y = get_spawn_location(maze)
     while player_location == target_location:
         target_location.x, target_location.y = get_spawn_location(maze)
     print('Player: '+str(player_location))
     print('Target: '+str(target_location))
+    
+    target_location.x, target_location.y = 0, 4
+    player_location.x, player_location.y = 4, 4
+    astar = AStar(maze=maze, start=player_location, target=target_location)
 
 def draw():
     global maze, player_location, target_location
@@ -46,8 +54,17 @@ def draw():
     draw_target(target_location)
 
 def keyPressed():
+    global maze, astar
     if key == 'u':
         new_maze()
+        
+    if key == 'p':
+        astar.find_path()
+        for y in range(len(maze)):
+            cl = ''
+            for x in range(len(maze[0])):
+                cl += str(astar.node_map[y][x])+', '
+            print(cl)
 
 def generate_maze(size=20, probability_of_blocked=0.3, min_blocked=80):
     global blocked_block, open_block
@@ -62,7 +79,7 @@ def generate_maze(size=20, probability_of_blocked=0.3, min_blocked=80):
             blocked_count += 1 if blocked else 0
             maze[y][x] = blocked_block if blocked else open_block
 
-    if not blocked_count > min_blocked:
+    if not blocked_count > min_blocked and probability_of_blocked != 0:
         return generate_maze(size=size,
                             probability_of_blocked=probability_of_blocked * 1.1,
                             min_blocked=min_blocked)
