@@ -12,7 +12,7 @@ cube = Cube()
 
 balls = [ball]
 
-fps = 24
+fps = 60
 time_step = 1 / fps
 
 def setup():
@@ -23,7 +23,7 @@ def setup():
     background(0)
     cam = PeasyCam(this, 400)
     cam.setWheelScale(0.1)
-    cam.setYawRotationMode()
+    # cam.setYawRotationMode()
 
     ball.limit_x = width / 2
     ball.limit_y = height / 2
@@ -43,15 +43,18 @@ def draw():
 
     cube.update(time_step)
 
+alternate = 1
 def keyPressed():
+    global alternate
     if key == 'u':
         ball.physics.apply_acceleration(Vector3(0, -20, 0), 1)
 
     if key == 'r':
-        ball.physics.position = Vector3(0, -height / 2, 0)
+        ball.physics.position = Vector3(0, 0, 0)
 
     if key == 'a':
         add_ball()
+        alternate = -alternate
 
 
 def add_ball():
@@ -62,8 +65,8 @@ def add_ball():
                 limit_x=width / 2,
                 limit_y=height / 2,
                 limit_z=width / 2)
-    ball.physics.velocity = Vector3(random(50, 150),
-                                    random(-200, 200),
-                                    random(-150, -50))
+    ball.physics.velocity = Vector3(random(50, 150) * alternate,
+                                    random(-200, 200) * alternate,
+                                    random(-150, -50) * alternate)
     balls.append(ball)
     
