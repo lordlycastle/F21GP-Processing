@@ -1,10 +1,28 @@
 from __future__ import division
-
+from physics_object import PhysicsObject
 
 
 class Boid(object):
-    def __init__(self):
-        pass
+    def __init__(self, max_velocity=25, radius=5):
+        self.physics = PhysicsObject()
+        self.max_velocity = max_velocity
+        self.radius = radius
+        self.wandertheta = 0
+        
+    def update(self, time_step):
+        self.physics.update(time_step)
+        
+        self.draw_shape(self.radius)
+        
+        
+    def wander(self, radius=50, distance=85, delta=0.3):
+        circle_center = self.physics.velocity.direction * distance
+        # circle_Center += self.physics.position
+        displacement = Vector3(1, 1, 1) * radius
+        self.wandertheta += random(-delta, delta)
+        
+        wander_force = circle_center + displacement
+        
         
         
     def draw_shape(r=5):

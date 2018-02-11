@@ -21,6 +21,7 @@ def setup():
 
 
 def draw():
+    Vector3._test_class()
     background(0)
     ambientLight(205, 205, 205)
     directionalLight(126, 126, 126, 0, 0, -1)
