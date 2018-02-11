@@ -76,7 +76,7 @@ class ParticleExplosion(object):
             particle = PhysicsParticle(lifetime, 
                                        add_noise=False, 
                                        acceleration=acceleration)
-            particle.velocity = direction*velocity_factor
+            particle.velocity = direction*random(velocity_factor/2, velocity_factor)
             particle.position = self.position
             self.particles.append(particle)
             

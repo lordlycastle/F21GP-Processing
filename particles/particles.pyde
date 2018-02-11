@@ -29,6 +29,7 @@ def setup():
     cam = PeasyCam(this, 400)
     cam.setWheelScale(0.1)
     cam.setYawRotationMode()
+    
 
 seed = 0
 def draw():
@@ -41,8 +42,8 @@ def draw():
     # randomSeed(seed)
     seed += 1
     # x, y = 0, 0
-    emitter.velocity.x = random(sin(radians(seed)) * -100, 0)
-    emitter.velocity.z = random(cos(radians(seed)) * -100, 0)
+    emitter.velocity.x = random(sin(radians(seed)) * -100, -50)
+    emitter.velocity.z = random(cos(radians(seed)) * -100, -50)
     # print(len(emitter.particles))
 
     # explosion.update(time_step)
