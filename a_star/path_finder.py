@@ -11,13 +11,12 @@ class AStar(object):
         self.blocked_block = 1
 
         self.create_node_map()
-        self.node_map[start.y][start.x].explored = True
-
         self.start_node = self.node_map[start.y][start.x]
         self.start_node.opened = True
-        self.open_nodes = [self.start_node]
+        
+        self.open_nodes = []
         self.closed_nodes = []
-
+    
     def create_node_map(self):
         for y in range(len(self.maze)):
             node_row = []
@@ -28,9 +27,14 @@ class AStar(object):
                     node = Node(x=x, y=y)
                     node_row.append(node)
             self.node_map.append(node_row)
+            
 
     def find_path(self, allow_diagonal=True):
         count = 0
+        self.create_node_map()
+        self.start_node = self.node_map[self.start.y][self.start.x]
+        self.start_node.opened = True
+        self.open_nodes = [self.start_node]
         while True:
             current_node = self.get_current_node()
             self.open_nodes.remove(current_node)
@@ -39,7 +43,7 @@ class AStar(object):
 
             if current_node.x == self.target.x and \
                current_node.y == self.target.y:
-                return
+                break
 
             neighbourhood = current_node.get_neighbourhood_locations(allow_diagonal)
             neighbourhood = self.check_neighbourhood_boundary(neighbourhood)
@@ -61,9 +65,11 @@ class AStar(object):
                     self.open_nodes.append(neighbour_node)
 
             count += 1
-            if count > 100000:
+            if count > 10000:
                 print("Stuck in a loop")
-                return
+                break
+            
+        print('Moves: '+str(count))
 
     def check_neighbourhood_boundary(self, neighbourhood):
         x_len = len(self.maze[0])-1
@@ -83,6 +89,8 @@ class AStar(object):
             if node.f_cost < min_f_cost:
                 lowest_node = node
                 min_f_cost = lowest_node.f_cost
+        if lowest_node == None:
+            print('Error: No starting point. Count: '+str(len(self.open_nodes)))
         return lowest_node
 
 class Node(object):
@@ -126,4 +134,5 @@ class Node(object):
         self.h_cost = (abs(self.x - x) + abs(self.y - y)) * 10
 
     def __str__(self):
-        return 'G: {: >3}, H:{: >3}'.format(self.g_cost, self.h_cost)
+        return 'G: {: >3}, H:{: >3}, ({},{})'.format(self.g_cost, self.h_cost,
+                                                 self.x, self.y)
