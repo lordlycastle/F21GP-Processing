@@ -7,6 +7,6 @@ Assignments for the Games Programming course done in Processing 3 using Python.
 4. A* Pathfinding
 
 ## Installation
-Get [Processing](processing.org) and download these project. 
+Get [Processing](https://processing.org) and download these project. 
 Open and run the main files (*.pyde).
 
