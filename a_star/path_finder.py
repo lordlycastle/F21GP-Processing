@@ -10,14 +10,12 @@ class AStar(object):
         self.open_block = 0
         self.blocked_block = 1
 
-        self.create_node_map()
-        self.start_node = self.node_map[start_coord.y][start_coord.x]
-        self.start_node.opened = True
-        
-        self.open_nodes = []
-        self.closed_nodes = []
+        self.start_node = None
+        # self.open_nodes = []
+        # self.closed_nodes = []
     
     def create_node_map(self):
+        self.node_map = []
         for y in range(len(self.maze)):
             node_row = []
             for x in range(len(self.maze[0])):
@@ -34,12 +32,13 @@ class AStar(object):
         self.create_node_map()
         self.start_node = self.node_map[self.start_coord.y][self.start_coord.x]
         self.start_node.opened = True
-        self.open_nodes = [self.start_node]
+        open_nodes = [self.start_node]
+        closed_nodes = []
         while True:
-            current_node = self.get_current_node()
-            self.open_nodes.remove(current_node)
+            current_node = self.get_current_node(open_nodes)
+            open_nodes.remove(current_node)
             current_node.explored = True
-            self.closed_nodes.append(current_node)
+            closed_nodes.append(current_node)
 
             if current_node.x == self.target.x and \
                current_node.y == self.target.y:
@@ -62,7 +61,7 @@ class AStar(object):
                     neighbour_node.set_h_cost_to(self.target.x, self.target.y)
                     neighbour_node.parent = current_node
                     neighbour_node.opened = True
-                    self.open_nodes.append(neighbour_node)
+                    open_nodes.append(neighbour_node)
 
             count += 1
             if count > 10000:
@@ -82,15 +81,15 @@ class AStar(object):
             new_neighbourhood.append(coord)
         return new_neighbourhood
     
-    def get_current_node(self):
+    def get_current_node(self, open_nodes):
         min_f_cost = 99999999999
         lowest_node = None
-        for node in self.open_nodes:
+        for node in open_nodes:
             if node.f_cost < min_f_cost:
                 lowest_node = node
                 min_f_cost = lowest_node.f_cost
         if lowest_node == None:
-            print('Error: No starting point. Count: '+str(len(self.open_nodes)))
+            print('Error: No starting point. Count: '+str(len(open_nodes)))
         return lowest_node
 
 class Node(object):
