@@ -4,10 +4,12 @@ from ball import Ball, Cube
 from vector3 import Vector3
 add_library('peasycam')
 
+gravity = Vector3(0, 50, 0)
+apply_gravity = True
 
 ball = Ball(radius=25, position=Vector3())
-ball.physics.acceleration = Vector3(0, 10, 0)
-ball.physics.velocity = Vector3(100, 50, -75)
+ball.physics.acceleration = gravity
+ball.physics.velocity = Vector3(5, 100, -10)
 cube = Cube()
 
 balls = [ball]
@@ -58,6 +60,7 @@ def keyPressed():
 
 
 def add_ball():
+    global gravity, apply_gravity
     ball = Ball(radius=random(10, 30),
                 position=Vector3(random(-width / 2+100, width / 2-100),
                                  random(-height / 2+100, height / 2-100),
@@ -68,5 +71,7 @@ def add_ball():
     ball.physics.velocity = Vector3(random(50, 150) * alternate,
                                     random(-200, 200) * alternate,
                                     random(-150, -50) * alternate)
+    if apply_gravity:
+        ball.acceleration = Vector3(0, 50, 0)
     balls.append(ball)
     

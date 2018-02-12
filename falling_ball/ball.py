@@ -6,13 +6,20 @@ from physics_object import PhysicsObject
 
 class Ball(object):
 
-    def __init__(self, radius, position, limit_x=300, limit_y=300, limit_z=300):
+    def __init__(self,
+                 radius,
+                 position,
+                 limit_x=300,
+                 limit_y=300,
+                 limit_z=300,
+                 hit_velocity_loss=Vector3.from_scaler(0.2)):
         self.radius = radius
         self.physics = PhysicsObject()
         self.physics.position = position
         self.limit_x = limit_x
         self.limit_y = limit_y
         self.limit_z = limit_z
+        self.hit_velocity_loss = hit_velocity_loss
         self.color = color(random(255), random(255), random(255))
 
     def update(self, time_step):
@@ -38,17 +45,23 @@ class Ball(object):
         # Reflect X
         if self.physics.position.x + self.radius > self.limit_x or \
            self.physics.position.x - self.radius < -self.limit_x:
-            self.physics.velocity.x = -self.physics.velocity.x
-        
+            # x = abs(self.physics.velocity.x)-abs(self.hit_velocity_loss.x)
+            # self.physics.velocity.x = x * -1 if self.physics.velocity.x < 0 else 1
+            self.physics.velocity.x = -self.physics.velocity.x * (1-self.hit_velocity_loss.x)
+
         # Reflect y
-        if self.physics.position.y+self.radius > self.limit_y or \
-           self.physics.position.y-self.radius < -self.limit_y:
-            self.physics.velocity.y = -self.physics.velocity.y
-            
+        if self.physics.position.y + self.radius > self.limit_y or \
+           self.physics.position.y - self.radius < -self.limit_y:
+            # y = abs(self.physics.velocity.y)-abs(self.hit_velocity_loss.y)
+            # self.physics.velocity.y = y * -1 if self.physics.velocity.y < 0 else 1
+            self.physics.velocity.y = -self.physics.velocity.y * (1-self.hit_velocity_loss.y)
+
         # Reflect X
-        if self.physics.position.z+self.radius > self.limit_z or \
-           self.physics.position.z-self.radius < -self.limit_z:
-            self.physics.velocity.z = -self.physics.velocity.z
+        if self.physics.position.z + self.radius > self.limit_z or \
+           self.physics.position.z - self.radius < -self.limit_z:
+            # z = abs(self.physics.velocity.z)-abs(self.hit_velocity_loss.z)
+            # self.physics.velocity.z = z * -1 if self.physics.velocity.z < 0 else 1
+            self.physics.velocity.z = -self.physics.velocity.z * (1-self.hit_velocity_loss.z)
 
 
 class Cube(object):
@@ -57,7 +70,7 @@ class Cube(object):
         self.size = size
         self.physics = PhysicsObject()
         self.physics.position = position
-        self.x = self.size 
+        self.x = self.size
         self.y = self.size
         self.z = self.size
 
