@@ -51,7 +51,7 @@ def new_maze():
     print('Player: ' + str(player_location))
     print('Target: ' + str(target_location))
     
-    astar = AStar(maze=maze, start=player_location, target=target_location)
+    astar = AStar(maze=maze, start_coord=player_location, target=target_location)
 
 def draw():
     global maze, player_location, target_location, astar, draw_solution
@@ -62,6 +62,8 @@ def draw():
         draw_explored(astar)
         draw_path(astar)
         draw_solution = False
+        
+    print('----------------')
     
 
 def keyPressed():
@@ -79,7 +81,7 @@ def keyPressed():
             print(cl)
             
     if key == 'f':
-        astar.find_path()
+        astar.find_path(allow_diagonal=False)
         draw_solution = True
         redraw()
         
@@ -112,11 +114,12 @@ def generate_maze(size=20, probability_of_blocked=0.3, min_blocked=80):
 
 
 def draw_maze(maze):
+    global open_block, blocked_block
     for x in range(len(maze[0])):
         for y in range(len(maze)):
             if maze[y][x] == blocked_block:
                 fill(blocked_color)
-            elif maze[y][y] == open_block:
+            elif maze[y][x] == open_block:
                 fill(open_color)
             
             rect((x) * block_size, y * block_size, block_size, block_size)

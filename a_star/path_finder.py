@@ -2,16 +2,16 @@ from vector3 import Vector3
 
 class AStar(object):
 
-    def __init__(self, maze, start, target):
+    def __init__(self, maze, start_coord, target):
         self.maze = maze
-        self.start = start
+        self.start_coord = start_coord
         self.target = target
         self.node_map = []
         self.open_block = 0
         self.blocked_block = 1
 
         self.create_node_map()
-        self.start_node = self.node_map[start.y][start.x]
+        self.start_node = self.node_map[start_coord.y][start_coord.x]
         self.start_node.opened = True
         
         self.open_nodes = []
@@ -32,7 +32,7 @@ class AStar(object):
     def find_path(self, allow_diagonal=True):
         count = 0
         self.create_node_map()
-        self.start_node = self.node_map[self.start.y][self.start.x]
+        self.start_node = self.node_map[self.start_coord.y][self.start_coord.x]
         self.start_node.opened = True
         self.open_nodes = [self.start_node]
         while True:
