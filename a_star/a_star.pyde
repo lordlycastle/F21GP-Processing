@@ -30,7 +30,6 @@ def setup():
     # frameRate(fps)
     noLoop()
     
-    
     new_maze()
 
 def new_maze():
@@ -41,7 +40,7 @@ def new_maze():
     maze = generate_maze(size=maze_size,
                          # probability_of_blocked=0.4,
                          probability_of_blocked=0.3,
-                         min_blocked=maze_size*maze_size*0.2 
+                         min_blocked=maze_size * maze_size * 0.2
                          )
     
     player_location.x, player_location.y = get_spawn_location(maze)
@@ -51,7 +50,8 @@ def new_maze():
     print('Player: ' + str(player_location))
     print('Target: ' + str(target_location))
     
-    astar = AStar(maze=maze, start_coord=player_location, target=target_location)
+    astar = AStar(
+        maze=maze, start_coord=player_location, target=target_location)
 
 def draw():
     global maze, player_location, target_location, astar, draw_solution
@@ -88,9 +88,10 @@ def keyPressed():
 
 def generate_maze(size=20, probability_of_blocked=0.3, min_blocked=80):
     global blocked_block, open_block
-    if size*size <= min_blocked+2:
-        min_blocked = int(probability_of_blocked * size*size)
-        print('Had to change min number of blocked blocks to: '+str(min_blocked))
+    if size * size <= min_blocked + 2:
+        min_blocked = int(probability_of_blocked * size * size)
+        print(
+            'Had to change min number of blocked blocks to: ' + str(min_blocked))
     maze = []
     blocked_count = 0
     for _ in range(size):
@@ -154,9 +155,9 @@ def draw_path(astar):
     while True:
         if final_node == None:
             return
-        rect(final_node.x *block_size,
+        rect(final_node.x * block_size,
              final_node.y * block_size,
-             block_size, 
+             block_size,
              block_size)
         final_node = final_node.parent
         
@@ -172,4 +173,16 @@ def draw_explored(astar):
                      node.y * block_size,
                      block_size,
                      block_size)
-                
+     
+ def mouseDragged():
+     global maze
+     location = Vector3()
+     location.x = floor(mouseX / block_size)
+     location.y = floor(mouseY / block_size)
+     if location != player_location and \ 
+         location != target_location:
+        if maze[location.y][location.x] == open_block:
+            mazez[location.y][location.x] = blocked_block
+        elif maze[location.y][location.x] == blocked_block:
+            mazez[location.y][location.x] = open_block
+        
