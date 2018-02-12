@@ -18,13 +18,17 @@ class PhysicsObject(object):
         
     def update(self, time_step):
         newPosition = Vector3()
-        newPosition = self.position + \
-                      self.velocity*time_step + \
-                      self.acceleration*time_step*time_step*0.5
-        self.position = newPosition
         self.velocity = self.velocity + self.acceleration*time_step
+        newPosition = self.position + \
+                      self.velocity*time_step 
+                      # self.acceleration*time_step*time_step*0.5
+        self.position = newPosition
+        
+        self.acceleration = self.acceleration * 0
 
     def apply_acceleration(self, acceleration, duration):
         self.velocity = self.velocity + acceleration*duration
         
-
+        
+    def apply_force(self, force):
+        self.acceleration += force
