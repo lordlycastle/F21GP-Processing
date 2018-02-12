@@ -35,6 +35,9 @@ class AStar(object):
         open_nodes = [self.start_node]
         closed_nodes = []
         while True:
+            if len(open_nodes) == 0:
+                print('No path found.')
+                return
             current_node = self.get_current_node(open_nodes)
             open_nodes.remove(current_node)
             current_node.explored = True

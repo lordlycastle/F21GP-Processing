@@ -16,12 +16,15 @@ open_color = color(0, 255, 0)
 player_color = color(0, 0, 255)
 target_color = color(244, 66, 226)
 path_color = color(0, 0, 255, 150)
-explored_color = '#F08A4B'
+explored_color = '#d87e0f'
+frontier_color = '#ce5885'
 draw_solution = False
 
 # Will only need x,y
 player_location = Vector3()
 target_location = Vector3()
+
+allow_diagonal_move = True
 
 astar = 0
 
@@ -56,18 +59,18 @@ def new_maze():
 def draw():
     global maze, player_location, target_location, astar, draw_solution
     draw_maze(maze)
-    draw_player(player_location)
-    draw_target(target_location)
     if draw_solution:
+        draw_frontier(astar)
         draw_explored(astar)
         draw_path(astar)
         draw_solution = False
-        
+    draw_player(player_location)
+    draw_target(target_location)
     print('----------------')
     
 
 def keyPressed():
-    global maze, astar, draw_solution
+    global maze, astar, draw_solution, allow_diagonal_move
     if key == 'u':
         new_maze()
         redraw()
@@ -81,7 +84,7 @@ def keyPressed():
             print(cl)
             
     if key == 'f':
-        astar.find_path(allow_diagonal=False)
+        astar.find_path(allow_diagonal=allow_diagonal_move)
         draw_solution = True
         redraw()
         
@@ -168,21 +171,37 @@ def draw_explored(astar):
             if astar.node_map[y][x] == None:
                 continue
             node = astar.node_map[y][x]
-            if node.explored and not node.opened:
+            if node.explored and node.opened:
                 rect(node.x * block_size,
                      node.y * block_size,
                      block_size,
                      block_size)
-     
- def mouseDragged():
+
+def draw_frontier(astar):
+    fill(frontier_color)
+    for y in range(len(astar.maze)):
+        for x in range(len(astar.maze[0])):
+            if astar.node_map[y][x] == None:
+                continue
+            node = astar.node_map[y][x]
+            if not node.explored and node.opened:
+                rect(node.x * block_size,
+                     node.y * block_size,
+                     block_size,
+                     block_size)
+
+def mouseClicked():
      global maze
      location = Vector3()
      location.x = floor(mouseX / block_size)
      location.y = floor(mouseY / block_size)
-     if location != player_location and \ 
-         location != target_location:
+     print(location)
+     if location != player_location and \
+             location != target_location:
         if maze[location.y][location.x] == open_block:
-            mazez[location.y][location.x] = blocked_block
+            maze[location.y][location.x] = blocked_block
         elif maze[location.y][location.x] == blocked_block:
-            mazez[location.y][location.x] = open_block
+            maze[location.y][location.x] = open_block
+            
+        redraw()
         
