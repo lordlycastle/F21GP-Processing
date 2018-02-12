@@ -6,3 +6,7 @@ Assignments for the Games Programming course done in Processing 3 using Python.
 3. Flocking in 3D
 4. A* Pathfinding
 
+## Installation
+Get [Processing](processing.org) and download these project. 
+Open and run the main files (*.pyde).
+
