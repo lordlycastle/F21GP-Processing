@@ -24,7 +24,7 @@ draw_solution = False
 player_location = Vector3()
 target_location = Vector3()
 
-allow_diagonal_move = True
+allow_diagonal_move = False
 
 astar = 0
 

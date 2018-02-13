@@ -7,17 +7,34 @@ from flocking import Boid
 add_library('peasycam')
 
 
-
+height_ = 720
+width_ = 480
 fps = 30
 time_step = 1 / fps
+wrap_stage = False
 
-boid = Boid(max_velocity=50, radius=5, distance=10, theta=1, max_force=100)
+boid = Boid(max_velocity=100, radius=5, distance=10, theta=1, max_force=100)
 boids = [boid]
+
+random_spawn_points = False
+starting_velocity_factor = 0.3
+for _ in range(100):
+    b = Boid(max_velocity=100, 
+             radius=5, 
+             distance=10, 
+             theta=1, 
+             max_force=300, 
+             starting_velocity_factor=starting_velocity_factor)
+    if random_spawn_points:
+        b.physics.position = Vector3(random(-1, 1) * width_/2,
+                                     random(-1, 1) * height_/2,
+                                     random(-1, 1) * width_/2)
+    boids.append(b)
 
 
 def setup():
-    global ball
-    size(720, 480, P3D)
+    global ball, height_, width_
+    size(height_, width_, P3D)
     frameRate(fps)
     lights()
     background(0)
@@ -36,10 +53,18 @@ def draw():
     # directionalLight(255, 255, 255, -1, 0, 0)
 
     show_stage()
-    r=50
+    
     for boid in boids:
-        boid.update(time_step, 
-                    seek=Vector3(width/2, height/2, width/2)
+        if wrap_stage:
+            if abs(boid.physics.position.x) > width/2:
+                boid.physics.position.x = -boid.physics.position.x
+            if abs(boid.physics.position.z) > width/2:
+                boid.physics.position.z = -boid.physics.position.z
+            if abs(boid.physics.position.y) > height/2:
+                boid.physics.position.y = -boid.physics.position.y
+        boid.update(time_step,
+                    boids=boids,
+                    seek=Vector3(1,1,1)
                     )
         
         
@@ -58,7 +83,6 @@ def show_stage():
     translate(0, 0, 0)
     box(width, height, width)
     popMatrix()
-
 
 
 

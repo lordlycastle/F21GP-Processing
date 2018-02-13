@@ -1,0 +1,10 @@
+# Games Programming Report
+
+### Bouncing Ball
+The physics is calculated in `PhysicsObject` class which uses the _suvat_ equation to calculate position, velocity, and acceleration every update. The update frequency is set to match the frame rate. The `Ball` class has a `PhysicsObject` variable for keeping track of the physic properties of the ball. In the `update` function for `Ball` it calls the `PhysicsObject`'s update function first. After it has the new position, it calls `display` which draws a `Sphere` at the current position of the ball. 
+
+
+### Particles System
+The `ParticleEmitter` and `ParticleExplosion` classes keep track of `PhysicsParticle` objects. In every update both the classes loop over all the particles to call update in each. The `PhysicsParticle` class inherits all its physic behaviour from `PhysicsObject`. It updated in the same manner i.e. using _suvat_ equations. It also defined a `display` function which is called after it update the physics. The `display` function draws a low-poly sphere at the position calculated in physics update. The important distinction between 'PhysicsParticle' and 'Ball' is that the former has a lifetime. After which the particle is removed from the particle system and no longer updated. 
+
+

@@ -101,6 +101,7 @@ class ParticleExplosion(object):
         """
         directions = []
         y_step = 2 / steps
+        # Move y from -1..1 and find x,z going in a circle for each 
         for i in range(1, steps):
             y = y_step * i - 1
             r = 1 - y * y
