@@ -106,9 +106,9 @@ class Vector3(object):
         if (unit_vec - unit_vec).magnitude != 0:
             print("Fail -4")
             return
-        # if (unit_vec / 1) != (unit_vec / unit_vec):
-        #     print("Fail -5")
-        #     return
+        if (unit_vec / 1) != (unit_vec / unit_vec):
+            print("Fail -5")
+            return
         if unit_vec.dot(unit_vec) != 3:
             print("Fail -6")
             return

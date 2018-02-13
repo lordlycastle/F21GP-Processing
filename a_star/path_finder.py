@@ -11,8 +11,12 @@ class AStar(object):
         self.blocked_block = 1
 
         self.start_node = None
+        # For some reason open_nodes property gets deleted after it's empty
+        # and then it give an error when I try to find a path again.
         # self.open_nodes = []
         # self.closed_nodes = []
+        self.search_history = []
+        self.num_of_moves = 0
     
     def create_node_map(self):
         self.node_map = []
@@ -34,6 +38,8 @@ class AStar(object):
         self.start_node.opened = True
         open_nodes = [self.start_node]
         closed_nodes = []
+        self.search_history = []
+        self.num_of_moves = 0
         while True:
             if len(open_nodes) == 0:
                 print('No path found.')
@@ -42,6 +48,8 @@ class AStar(object):
             open_nodes.remove(current_node)
             current_node.explored = True
             closed_nodes.append(current_node)
+            self.search_history.append(Vector3(x=current_node.x,
+                                               y=current_node.y))
 
             if current_node.x == self.target.x and \
                current_node.y == self.target.y:
@@ -72,6 +80,7 @@ class AStar(object):
                 break
             
         print('Moves: '+str(count))
+        self.num_of_moves = count
 
     def check_neighbourhood_boundary(self, neighbourhood):
         x_len = len(self.maze[0])-1
