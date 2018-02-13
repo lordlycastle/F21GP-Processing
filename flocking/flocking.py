@@ -3,7 +3,9 @@ from physics_object import PhysicsObject
 from vector3 import Vector3
 
 class Boid(object):
-
+    """Individual agent class. Create multiple for fun times.
+    Note: I wouldn't trust this code too much.
+    """
     def __init__(self,
                  max_velocity=25,
                  radius=50,
@@ -63,6 +65,7 @@ class Boid(object):
                                              count=count)
 
         velocity = self.physics.velocity
+        
 
         velocity += self.align_weight * alignment + \
             self.cohere_weight * cohesion + \
@@ -72,6 +75,7 @@ class Boid(object):
         self.physics.velocity = velocity
         # print(separation)
 
+        
         self.physics.update(time_step)
 
         self.draw_shape(self.radius)
