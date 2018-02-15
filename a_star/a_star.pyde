@@ -6,7 +6,7 @@ maze_size = 20
 maze = None
 astar = None
 
-fps = 20
+fps = 60
 time_step = 1 / fps
 
 blocked_block = 1
@@ -68,11 +68,10 @@ def draw():
         draw_player(player_location)
         draw_target(target_location)
         draw_history()
-        delay(50)
+        # delay(50)
         return
     else:
         search_history_index = 0
-        print('1')
         noLoop()
 
     if draw_solution and draw_search_history:
@@ -215,7 +214,6 @@ def mouseClicked():
     location = Vector3()
     location.x = floor(mouseX / block_size)
     location.y = floor(mouseY / block_size)
-    print(location)
     if location != player_location and \
             location != target_location:
         if maze[location.y][location.x] == open_block:
@@ -256,6 +254,4 @@ def draw_history():
         #              block_size,
         #              block_size)
         
-
-    print(search_history_index)
     search_history_index = search_history_index + 1
