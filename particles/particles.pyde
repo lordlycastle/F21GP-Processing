@@ -5,7 +5,7 @@ from vector3 import Vector3
 from particle_emitter import ParticleEmitter, PhysicsParticle, ParticleExplosion
 add_library('peasycam')
 
-emitter = ParticleEmitter(num_of_particles=200,
+emitter = ParticleEmitter(num_of_particles=20,
                           position=Vector3(),
                           lifetime=5)
 

@@ -9,7 +9,7 @@ class Boid(object):
     def __init__(self,
                  max_velocity=25,
                  radius=50,
-                 distance=10,
+                 distance=10,  # Controls how much random velocity is added when in a flock
                  theta=0.3,
                  max_force=5,
                  seperation_distance=500,
@@ -75,7 +75,9 @@ class Boid(object):
         self.physics.velocity = velocity
         # print(separation)
 
-        
+        self.physics.velocity += Vector3(random(-self.distance, self.distance),
+                                        random(-self.distance, self.distance),
+                                        random(-self.distance, self.distance))
         self.physics.update(time_step)
 
         self.draw_shape(self.radius)

@@ -12,11 +12,9 @@ width_ = 480
 fps = 30
 time_step = 1 / fps
 wrap_stage = False
+boids = []
 
-boid = Boid(max_velocity=100, radius=5, distance=10, theta=1, max_force=100)
-boids = [boid]
-
-random_spawn_points = False
+random_spawn_points = True
 starting_velocity_factor = 0.3
 for _ in range(100):
     b = Boid(max_velocity=100, 
@@ -24,7 +22,8 @@ for _ in range(100):
              distance=10, 
              theta=1, 
              max_force=300, 
-             starting_velocity_factor=starting_velocity_factor)
+             starting_velocity_factor=starting_velocity_factor,
+             seperation_distance=100)
     if random_spawn_points:
         b.physics.position = Vector3(random(-1, 1) * width_/2,
                                      random(-1, 1) * height_/2,
@@ -83,8 +82,6 @@ def show_stage():
     translate(0, 0, 0)
     box(width, height, width)
     popMatrix()
-
-
 
 
 
