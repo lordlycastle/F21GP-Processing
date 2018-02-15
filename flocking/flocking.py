@@ -71,7 +71,7 @@ class Boid(object):
             self.cohere_weight * cohesion + \
             self.separate_weight * separation
         if velocity.magnitude > self.max_velocity:
-            velocity = velocity.direction * self.max_velocity
+            velocity = velocity.direction * self.max_velocity*0.6
         self.physics.velocity = velocity
         # print(separation)
 

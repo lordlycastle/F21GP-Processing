@@ -14,7 +14,7 @@ time_step = 1 / fps
 wrap_stage = False
 boids = []
 
-random_spawn_points = True
+random_spawn_points = False
 starting_velocity_factor = 0.3
 for _ in range(100):
     b = Boid(max_velocity=100, 
